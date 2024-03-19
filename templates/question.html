@@ -6,6 +6,13 @@
     <link rel="stylesheet" href="../static/bootstrap-5.3.3-dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../static/img/terminal_black_24dp.svg"/>
     <style>
+        a{
+            color: #1f75fe;
+        }
+        a:hover{
+            color: #6495ed;
+        }
+
         .nav-color {
             background-color: #1c1c1c;
         }
@@ -15,11 +22,11 @@
         }
 
         .my-btn {
-            color: #3caa3c;
+            border: 1px groove #1f75fe;
         }
 
         .my-btn:hover {
-            border: 1px solid #0f5132;
+            border: 1px solid #6495ed;
             background-color: #1a1d20;
         }
 
@@ -30,9 +37,9 @@
         }
 
         .gray:hover{
-            background-color: #333355;
+            background-color:  #1f75fe;
             border: none;
-             color: white;
+             color: black;
         }
 
         .search-input {
@@ -51,12 +58,12 @@
         }
 
         .white {
-            color: white;
+            color: #edf3fc;
         }
 
         .mid-gray {
             background-color: #1c1c1c;
-            color: white;
+            color: #f5f5f5;
         }
 
         .pic {
@@ -72,8 +79,8 @@
             object-position: 0 0;
         }
 
-        .w_50{
-            width: 50px; !important;
+        .nav-brand-hover:hover{
+            color:  #1f75fe;
         }
     </style>
 </head>
@@ -81,7 +88,7 @@
 <div>
     <nav class="navbar nav-color">
         <div class="container-sm-fluid container-lg">
-            <a class="navbar-brand fw-bold white">
+            <a class="navbar-brand fw-bold white nav-brand-hover">
                 ВОПРОСЫ?
             </a>
             <form class="d-flex" role="search">
@@ -92,7 +99,7 @@
                             aria-label="Search"
                     />
                     <div class="input-group-append">
-                        <button class="btn btn-outline-success my-btn" type="submit">
+                        <button class="btn my-btn" type="submit">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  height="24px"
                                  viewBox="0 0 24 24"
@@ -102,7 +109,7 @@
                                         d="M0 0h24v24H0z"
                                         fill="none"
                                 />
-                                <path stroke="#3caa3c" stroke-width="2"
+                                <path stroke="#1f75fe" stroke-width="2"
                                       d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
                                 />
                             </svg>
