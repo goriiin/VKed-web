@@ -1,90 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <title>ask</title>
+    <title>register</title>
     <link rel="stylesheet" href="../static/bootstrap-5.3.3-dist/css/bootstrap.min.css">
     <link rel="shortcut icon" href="../static/img/terminal_black_24dp.svg"/>
-    <style>
-        a{
-            color: #1f75fe;
-        }
-        a:hover{
-            color: #6495ed;
-        }
-
-        .nav-color {
-            background-color: #1c1c1c;
-        }
-
-        .main {
-            background-color: #131313;
-        }
-
-        .my-btn {
-            border: 1px groove #1f75fe;
-            color: #1f75fe;
-        }
-
-        .my-btn:hover {
-            border: 1px solid #6495ed;
-            background-color: #1a1d20;
-            color: white;
-        }
-
-        .gray{
-            background-color: #333333;
-            border: none;
-            color: white;
-        }
-
-        .gray:hover{
-            background-color:  #1f75fe;
-            border: none;
-             color: black;
-        }
-
-        .search-input {
-            background-color: #333333;
-            border: none;
-            color: white;
-        }
-
-        .search-input:focus {
-            outline: none;
-            color: white;
-            background-color: #333333;
-            -webkit-box-shadow: none;
-            box-shadow: none;
-
-        }
-
-        .white {
-            color: #edf3fc;
-        }
-
-        .mid-gray {
-            background-color: #1c1c1c;
-            color: #f5f5f5;
-        }
-
-        .pic {
-            width: 100px;
-            height: 100px;
-            border-style: solid;
-        }
-
-        .pic img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: 0 0;
-        }
-
-        .nav-brand-hover:hover{
-            color:  #1f75fe;
-        }
-    </style>
+    <link rel="stylesheet" href="../static/css/style.css">
 </head>
 <body class="main">
 <div>
@@ -96,7 +17,7 @@
             <form class="d-flex" role="search">
                 <div class="input-group">
                     <input
-                            class="form-control search-input"
+                            class="form-control my-input"
                             type="search"
                             aria-label="Search"
                     />
@@ -121,20 +42,10 @@
                 </div>
             </form>
 
-            <div class="d-flex justify-content-between gap-3">
-                <div class="border">
-                    <img src="../static/img/photo_2024-03-09_21-45-42.jpg"
-                         width="50" height="50"/>
-                </div>
-                <div class="d-flex flex-column justify-content-between">
-                    <div class="white">
-                        Dr. Pepper
-                    </div>
-                    <div>
-                        <a href="/settings.html">Settings</a>
-                        <a href="/logout.html">Log out</a>
-                    </div>
-                </div>
+            <div class="d-flex gap-3 align-items-center" style="height: 50px">
+                <a class="m-3" href="/settings.html">Login</a>
+                <a class="m-3" href="/settings.html">Register</a>
+
             </div>
         </div>
     </nav>
@@ -146,19 +57,19 @@
         <div class="row">
             <div class="col-8">
                 <div class="form-floating mb-3 col-6">
-                    <input type="text" class="form-control" id="LoginInpput" placeholder="VasyaPupkin2004">
+                    <input type="text" class="form-control my-input" id="LoginInpput" placeholder="VasyaPupkin2004">
                     <label for="LoginInpput">Login</label>
                 </div>
                 <div class="form-floating mb-3 col-6">
-                    <input type="email" class="form-control" id="EmailInput" placeholder="name@example.com">
+                    <input type="email" class="form-control my-input" id="EmailInput" placeholder="name@example.com">
                     <label for="EmailInput">Email address</label>
                 </div>
                 <div class="form-floating mb-3 col-6">
-                    <input type="text" class="form-control" id="NickInput" placeholder="Vasya Pupkin">
+                    <input type="text" class="form-control my-input" id="NickInput" placeholder="Vasya Pupkin">
                     <label for="NickInput">Nickname</label>
                 </div>
                 <div class="form-floating col-6">
-                    <input type="password" id="inputPassword1" class="form-control" aria-describedby="passwordHelpBlock" placeholder="Sl0jnu1p@r0l1111">
+                    <input type="password" id="inputPassword1" class="form-control my-input" aria-describedby="passwordHelpBlock" placeholder="Sl0jnu1p@r0l1111">
                     <label for="inputPassword1">Password</label>
                 </div>
                 <div id="passwordHelpBlock" class="form-text mb-3" style="color: #7d7f7d">
@@ -166,8 +77,8 @@
                     spaces, special characters, or emoji.
                 </div>
                 <div class="form-floating mb-3 col-6">
-                    <input type="password" id="inputPassword2" class="form-control" aria-describedby="passwordHelpBlock" placeholder="Sl0jnu1p@r0l1111">
-                    <label for="inputPassword2">Password</label>
+                    <input type="password" id="inputPassword2" class="form-control my-input" aria-describedby="passwordHelpBlock" placeholder="Sl0jnu1p@r0l1111">
+                    <label for="inputPassword2">Repeat Password</label>
                 </div>
                 <div class="mt-3">
                     <h5 class="white">
