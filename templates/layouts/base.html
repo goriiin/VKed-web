@@ -2,10 +2,10 @@
 <html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <title>login</title>
-    <link rel="stylesheet" href="../static/bootstrap-5.3.3-dist/css/bootstrap.min.css">
-    <link rel="shortcut icon" href="../static/img/terminal_black_24dp.svg"/>
-    <link rel="stylesheet" href="../static/css/style.css">
+    <title>main</title>
+    <link rel="stylesheet" href="../../static/bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="../../static/img/terminal_black_24dp.svg"/>
+    <link rel="stylesheet" href="../../static/css/style.css">
 </head>
 <body class="main">
 <div>
@@ -42,36 +42,31 @@
                 </div>
             </form>
 
-            <div class="d-flex gap-3 align-items-center" style="height: 50px">
-                <a class="m-3" href="/settings.html">Login</a>
-                <a class="m-3" href="/settings.html">Register</a>
-
+            <div class="d-flex justify-content-between gap-3">
+                <div class="border">
+                    <img src="../../static/img/photo_2024-03-09_21-45-42.jpg"
+                         width="50" height="50"/>
+                </div>
+                <div class="d-flex flex-column justify-content-between">
+                    <div class="white">
+                        Dr. Pepper
+                    </div>
+                    <div>
+                        <a href="/settings.html">Settings</a>
+                        <a href="/logout.html">Log out</a>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
     <main class="container-fluid container-lg mt-3">
         <div class="d-flex gap-3 align-items-center">
-            <h1 class="white">Login</h1>
+             <h1 href="/hot.html">content</h1>
+
         </div>
         <div class="row">
             <div class="col-8">
-                 <div class="alert alert-danger d-flex mb-3 col-9 text-center" role="alert">
-                    <span>
-                        ERROR
-                    </span>
-                </div>
-                <div class="form-floating mb-3 col-6">
-                    <input type="text" class="form-control my-input" id="LoginInpput" placeholder="VasyaPupkin2004">
-                    <label for="LoginInpput">Login</label>
-                </div>
-                <div class="form-floating col-6 mb-3">
-                    <input type="password" id="inputPassword1" class="form-control my-input"
-                           aria-describedby="passwordHelpBlock" placeholder="Sl0jnu1p@r0l1111">
-                    <label for="inputPassword1">Password</label>
-                </div>
-                <button type="button" class="btn my-btn mb-3 col-2 me-3">Success</button>
-                <a class="col-6 float m-3r"> or create new account</a>
-
+                content
             </div>
             <div class="col-4">
                 <h3 class="white">Popular Tags</h3>
@@ -100,10 +95,10 @@
     </main>
     <footer class="fixed-bottom p-3 nav-color ">
         <div class="container">
-            <span class="white">Place sticky footer content here.</span>
+            <span class="white">это футтер</span>
         </div>
     </footer>
 </div>
 </body>
-<script src="../static/bootstrap-5.3.3-dist/js/bootstrap.bundle.js"></script>
+<script src="../../static/bootstrap-5.3.3-dist/js/bootstrap.bundle.js"></script>
 </html>
