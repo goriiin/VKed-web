@@ -34,14 +34,15 @@ def index(request):
 
 
 def hot(request):
-    paginator, items, page_num = pagination(request, QUESTIONS)
-    return render(request, "hot.html", {"items": items[::-1], "paginator": paginator})
+    paginator, questions, page_num = pagination(request, QUESTIONS[::-1])
+    return render(request, "index.html", {"questions": questions, "paginator": paginator})
 
 
 def question(request, question_id):
     item = QUESTIONS[question_id]
     paginator, items, page_num = pagination(request, ANSWERS, 2)
-    return render(request, "question.html", {"question": item, "answers": items, "paginator": pagination(request, ANSWERS, 2)})
+    return render(request, "question.html",
+                  {"question": item, "answers": items, "paginator": pagination(request, ANSWERS, 2)})
 
 
 def ask(request):
@@ -60,8 +61,8 @@ def tag(request, tag_name):
     Q = QUESTIONS.copy()
     for q in Q:
         q["tags"] = [tag_name]
-    paginator, items, page_num = pagination(request, QUESTIONS)
-    return render(request, "index.html", {"items": items, "paginator": paginator})
+    paginator, questions, page_num = pagination(request, Q)
+    return render(request, "index.html", {"questions": questions, "paginator": paginator})
 
 
 def settings(request):
