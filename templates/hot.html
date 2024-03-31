@@ -1,4 +1,4 @@
-{% extends 'layouts/base.html' %}
+{% extends "layouts/base.html" %}
 {% load static %}
 
 {% block nav %}
@@ -7,9 +7,8 @@
 
 {% block head %}
     <div class="d-flex gap-3 align-items-center">
-        <h3>
-            {{ tag_name }}
-        </h3>
+        <a href="/">New Questions</a>
+        <h3 href="/hot">Hot Questions</h3>
     </div>
 {% endblock %}
 
@@ -18,6 +17,6 @@
         {% for question in questions %}
             {% include 'layouts/question.html' with item=question %}
         {% endfor %}
-        {% include 'layouts/pagination.html' %}
+    {% include 'layouts/pagination.html' %}
     </div>
 {% endblock %}
