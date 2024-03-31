@@ -17,6 +17,9 @@
             {% for question in questions %}
                {% include 'layouts/question.html' with item=question %}
             {% endfor %}
-            {% include 'layouts/pagination.html' %}
+        <div class="me-3">
+            {% include 'layouts/pagination.html' with items=questions %}
+        </div>
+
         </div>
 {% endblock %}

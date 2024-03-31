@@ -16,7 +16,10 @@
             {% for item in answers %}
                 {% include "layouts/answer.html" %}
             {% endfor %}
-            {% include 'layouts/pagination.html' %}
+
+            <div class="me-3">
+            {% include 'layouts/pagination.html' with items=answers %}
+        </div>
 
             <hr style="border: 1px solid white">
             <div class="form-floating mb-3 g-5">
