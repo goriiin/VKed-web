@@ -5,22 +5,20 @@
     {% include 'layouts/nav.html' %}
 {% endblock %}
 
-
 {% block head %}
     <div class="d-flex gap-3 align-items-center">
-        <h3 href="/">New Questions</h3>
-        <a href="/hot">Hot Questions</a>
+        <a href="/">New Questions</a>
+        <h3 href="/hot">Hot Questions</h3>
     </div>
-{% endblock head %}
+{% endblock %}
 
 {% block content %}
     <div class="col-8">
         {% for question in questions %}
-            {% include "layouts/question.html" with item=question %}
+            {% include 'layouts/question.html' with item=question %}
         {% endfor %}
-        <div class="me-3">
-            {% include 'layouts/pagination.html' with items=questions %}
-        </div>
-
+    <div class="me-3">
+                {% include 'layouts/pagination.html' with items=questions %}
+            </div>
     </div>
 {% endblock %}
