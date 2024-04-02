@@ -2,7 +2,7 @@
 
 <nav class="navbar nav-color">
         <div class="container-sm-fluid container-lg">
-            <a class="navbar-brand fw-bold white nav-brand-hover" href="hot">
+            <a class="navbar-brand fw-bold white nav-brand-hover" href="{% url 'index' %}">
                 ВОПРОСЫ?
             </a>
             <form class="d-flex" role="search">
@@ -43,8 +43,8 @@
                         Dr. Pepper
                     </div>
                     <div>
-                        <a href="/settings">Settings</a>
-                        <a href="/logout">Log out</a>
+                        <a href="{% url 'settings' %}">Settings</a>
+                        <a href="{% url 'logout' %}">Log out</a>
                     </div>
                 </div>
             </div>

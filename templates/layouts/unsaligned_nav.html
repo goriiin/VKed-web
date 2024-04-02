@@ -2,7 +2,7 @@
 
 <nav class="navbar nav-color">
         <div class="container-sm-fluid container-lg">
-            <a class="navbar-brand fw-bold white nav-brand-hover" href="hot">
+            <a class="navbar-brand fw-bold white nav-brand-hover" href="{% url 'login' %}">
                 ВОПРОСЫ?
             </a>
             <form class="d-flex" role="search">
@@ -34,8 +34,8 @@
             </form>
 
             <div class="d-flex gap-3 align-items-center" style="height: 50px">
-                <a class="m-3" href="/login">Login</a>
-                <a class="m-3" href="/signup">Register</a>
+                <a class="m-3" href="{% url 'login' %}">Login</a>
+                <a class="m-3" href="{% url 'signup' %}">Register</a>
 
             </div>
         </div>

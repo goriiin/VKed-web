@@ -17,18 +17,18 @@
         <div class="col">
             <div class="card-body">
                 <h5 class="card-title">
-                    <a href="/question.html">{{ item.title }}</a>
+                    <a href="{% url 'question' item.id %}">{{ item.title }}</a>
                 </h5>
                 <p class="card-text">
                     {{ item.text }}
                 </p>
                 <div class="col">
-                    <a class="row container mb-4" href="/question.html">answers (3)</a>
+                    <a class="row container mb-4" href="{% url 'question' item.id %}">answers (3)</a>
                     <div class="row mb-0">
                         <div class="col">
                             <span>Tags</span>
                             {% for tag in item.tags %}
-                            <a href="/tag/{{ tag }}">{{ tag }}</a>
+                                <a href="{% url 'tag' tag %}">{{ tag }}</a>
                             {% endfor %}
                         </div>
                     </div>

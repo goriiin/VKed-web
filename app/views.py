@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 
 QUESTIONS = [
     {
+        "id": i,
         "title": f"Question {i}",
         "text": f"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore "
                 f"et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut ",
@@ -22,7 +23,13 @@ ANSWERS = [
 
 
 def pagination(request, items, count=3):
-    page_num = int(request.GET.get('page', 1))
+    page_num = request.GET.get('page', 1)
+    try:
+        page_num = int(page_num)
+    except ValueError:
+        # Обработка случая, когда параметр 'page' не является целым числом
+        page_num = 1
+
     paginator = Paginator(items, count)
     page_obj = paginator.get_page(page_num)
     return paginator, page_obj, page_num
@@ -31,6 +38,7 @@ def pagination(request, items, count=3):
 def index(request):
     paginator, questions, page_num = pagination(request, QUESTIONS)
     return render(request, "index.html", {"questions": questions, "paginator": paginator})
+
 
 
 def hot(request):
@@ -59,10 +67,11 @@ def sign_up(request):
 
 def tag(request, tag_name):
     Q = QUESTIONS.copy()
+    print(tag_name)
     for q in Q:
         q["tags"] = [tag_name]
     paginator, questions, page_num = pagination(request, Q)
-    return render(request, "index.html", {"questions": questions, "paginator": paginator})
+    return render(request, "tag.html", {"tag": tag_name, "questions": questions, "paginator": paginator})
 
 
 def settings(request):
@@ -70,5 +79,4 @@ def settings(request):
 
 
 def logout_view(request):
-    logout(request)
-    return redirect("/login", permanent=True)
+    return redirect("/login")

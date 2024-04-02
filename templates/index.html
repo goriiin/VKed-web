@@ -10,16 +10,16 @@
         <h3 href="/">New Questions</h3>
         <a href="/hot">Hot Questions</a>
     </div>
-{% endblock %}
+{% endblock head %}
 
 {% block content %}
-        <div class="col-8">
-            {% for question in questions %}
-               {% include 'layouts/question.html' with item=question %}
-            {% endfor %}
-            <div class="me-3">
-                {% include 'layouts/pagination.html' with items=questions %}
-            </div>
-
+    <div class="col-8">
+        {% for question in questions %}
+            {% include "layouts/question.html" with item=question %}
+        {% endfor %}
+        <div class="me-3">
+            {% include 'layouts/pagination.html' with items=questions %}
         </div>
+
+    </div>
 {% endblock %}
