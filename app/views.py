@@ -27,7 +27,6 @@ def pagination(request, items, count=3):
     try:
         page_num = int(page_num)
     except ValueError:
-        # Обработка случая, когда параметр 'page' не является целым числом
         page_num = 1
 
     paginator = Paginator(items, count)
