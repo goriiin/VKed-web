@@ -1,52 +1,56 @@
 {% load static %}
 
 <nav class="navbar nav-color">
-        <div class="container-sm-fluid container-lg">
-            <a class="navbar-brand fw-bold white nav-brand-hover" href="{% url 'index' %}">
-                ВОПРОСЫ?
-            </a>
-            <form class="d-flex" role="search">
-                <div class="input-group">
-                    <input
-                            class="form-control my-input"
-                            type="search"
-                            aria-label="Search"
-                    />
-                    <div class="input-group-append">
-                        <button class="btn my-btn" type="submit">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 height="24px"
-                                 viewBox="0 0 24 24"
-                                 width="24px"
-                                 fill="#000000">
-                                <path
-                                        d="M0 0h24v24H0z"
-                                        fill="none"
-                                />
-                                <path stroke="#1f75fe" stroke-width="2"
-                                      d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
-                            </svg>
-                        </button>
-                    </div>
-
+    <div class="container-sm-fluid container-lg">
+        <a class="navbar-brand fw-bold white nav-brand-hover" href="{% url 'index' %}">
+            ВОПРОСЫ?
+        </a>
+        <form class="d-flex" role="search">
+            <div class="input-group">
+                <input
+                        class="form-control my-input"
+                        type="search"
+                        aria-label="Search"
+                />
+                <div class="input-group-append">
+                    <button class="btn my-btn" type="submit">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             height="24px"
+                             viewBox="0 0 24 24"
+                             width="24px"
+                             fill="#000000">
+                            <path
+                                    d="M0 0h24v24H0z"
+                                    fill="none"
+                            />
+                            <path stroke="#1f75fe" stroke-width="2"
+                                  d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                        </svg>
+                    </button>
                 </div>
-            </form>
 
-            <div class="d-flex justify-content-between gap-3">
-                <div class="border">
-                    <img
-                            src="{% static 'img/photo_2024-03-09_21-45-42.jpg' %}" , width="50" height="50"
-                    />
+            </div>
+        </form>
+
+        <div class="d-flex justify-content-between gap-3">
+            <div class="d-flex align-items-center me-4">
+                <a class="fw-bold" href="{% url 'ask' %}">ASK!</a>
+            </div>
+            <div class="border">
+                <img
+                        src="{% static 'img/photo_2024-03-09_21-45-42.jpg' %}" , width="50" height="50"
+                />
+            </div>
+            <div class="d-flex flex-column justify-content-between">
+
+                <div class="white">
+                    Dr. Pepper
                 </div>
-                <div class="d-flex flex-column justify-content-between">
-                    <div class="white">
-                        Dr. Pepper
-                    </div>
-                    <div>
-                        <a href="{% url 'settings' %}">Settings</a>
-                        <a href="{% url 'logout' %}">Log out</a>
-                    </div>
+                <div>
+                    <a href="{% url 'settings' %}">Settings</a>
+                    <a href="{% url 'logout' %}">Log out</a>
                 </div>
             </div>
         </div>
-    </nav>
+    </div>
+</nav>
