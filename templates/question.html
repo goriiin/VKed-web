@@ -20,14 +20,14 @@
             {% endfor %}
 
             <div class="me-3">
-            {% include 'layouts/pagination.html' with items=answers %}
-        </div>
+                {% include 'layouts/pagination.html' with items=answers %}
+            </div>
 
             <hr style="border: 1px solid white">
             <div class="form-floating mb-3 g-5">
-            <textarea class="form-control my-input" placeholder="Leave a comment here" id="floatingTextarea2"
+            <textarea class="form-control my-input" placeholder="Leave a comment here" id="floatingTextarea"
                       style="min-height: 300px; max-height: 300px; resize: none"></textarea>
-                <label for="floatingTextarea2">Your answer</label>
+                <label for="floatingTextarea">Your answer</label>
             </div>
             <div class="mb-3">
                 <button type="button" class="btn btn-outline-primary me-3 mb-3 float-end">send</button>
