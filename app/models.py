@@ -32,6 +32,7 @@ class Profile(models.Model):
     avatar_path = models.ImageField(null=True, blank=True)
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    objects = models.Manager()
 
     def __str__(self):
         return self.user.name
@@ -101,7 +102,7 @@ class QuestionLike(models.Model):
     objects = QuestionLikeManager()
 
     class Meta:
-        unique_together = (('question', 'user_id'),)
+        unique_together = (('question_id', 'user_id'),)
 
 
 # =============Answer================================== #
@@ -158,6 +159,8 @@ class AnswerLike(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
     user_id = models.OneToOneField(Profile, on_delete=models.CASCADE)
+
+    objects = AnswerLikeManager
 
     class Meta:
         unique_together = ('user_id', 'answer')

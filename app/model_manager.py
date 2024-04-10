@@ -3,16 +3,16 @@ from django.core.paginator import Paginator
 from app.models import Question, Tag
 
 
-def index(page, count):
-    return Question.objects.news()[(page - 1) * count: page * count]
+def index():
+    return Question.objects.news()
 
 
-def hot(page, count):
-    return Question.objects.hot()[(page - 1) * count: page * count]
+def hot():
+    return Question.objects.hot()
 
 
-def tag(page, count, tag_name):
-    return Tag.objects.is_tag(tag_name)[(page - 1) * count: page * count]
+def tag(tag_name):
+    return Tag.objects.is_tag(tag_name)
 
 
 def check_page(request):
@@ -26,19 +26,7 @@ def check_page(request):
     return page
 
 
-def pages(page, count):
-    if count <= 1:
-        return []
-    if count < 5:
-        return [i for i in range(1, count + 1)]
-    if 4 < page < count:
-        return [1, '...'] + [i for i in range(page - 2, page + 3)] + ['...', count]
-    elif page > 4:
-        return [1, '..'] + [i for i in range(page - 2, count + 1)]
-    return [i for i in range(1, page + 3)] + ['...', count]
-
-
-def pagination(request, type_req, count=3, tag_name=None):
+def pagination(request, type_req, count=4, tag_name=None):
     page_num = check_page(request)
     if page_num == -1:
         return {'page_num': -1}
@@ -47,17 +35,19 @@ def pagination(request, type_req, count=3, tag_name=None):
         items = index(page_num, count)
     elif type_req == 'hot':
         items = hot(page_num, count)
-    else:
+    elif type_req == 'question':
         items = tag(page_num, count, tag_name)
 
     paginator = Paginator(items, count)
-    page_obj = paginator.get_page(page_num)
-    return paginator, page_obj, page_num
+    items = paginator.get_page(page_num)
+
+    return {'questions': items,
+            'paginator': paginator}
 
 
-def this_question(request, question_id, count=5):
-    page = check_page(request)
-    if page == -1:
+def this_question(request, question_id, count=4):
+    page_num = check_page(request)
+    if page_num == -1:
         return {'page': -1}
     try:
         question = Question.objects.get(pk=question_id)
@@ -65,9 +55,12 @@ def this_question(request, question_id, count=5):
         return {'page': -1}
 
     tags = question.tags.all()
-    answers = question.answer_set.all()[(page - 1) * count: page * count]
+    answers = question.answer_set.all()
+
+    paginator = Paginator(answers, count)
+    answers = paginator.get_page(page_num)
 
     return {
-        'page': page, 'question': question, 'tags': tags, 'answers': answers,
-        'pages': pages(page, (question.answer_set.count() + count - 1))
+        'question': question, 'tags': tags, 'answers': answers,
+        'paginator': paginator
     }
