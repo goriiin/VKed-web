@@ -50,9 +50,9 @@ class Command(BaseCommand):
                     print(i)
                 q = Question.objects.create(
                              title=get_rand_str(3, 8, False, True),
-                             description=get_rand_str(5, 10, True, True),
-                             date=timezone.now(),
-                             rating=0,
+                             content=get_rand_str(5, 10, True, True),
+                             created_time=timezone.now(),
+                             likes_count=0,
                              author_id=profiles[i % ratio]
                              )
                 for j in range(1, 3):
@@ -69,7 +69,7 @@ class Command(BaseCommand):
                                       date=timezone.now(),
                                       question=questions[i % ratio],
                                       author=profiles[i % ratio],
-                                      rating=0
+                                      likes_count=0
                                       )
             print('Created answers')
         print('Generate answerlikes?')
