@@ -1,4 +1,3 @@
-from django.contrib.auth import logout
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 
@@ -22,22 +21,13 @@ ANSWERS = [
 ]
 
 
-def pagination(request, items, count=3):
-    page_num = request.GET.get('page', 1)
-    try:
-        page_num = int(page_num)
-    except ValueError:
-        page_num = 1
 
-    paginator = Paginator(items, count)
-    page_obj = paginator.get_page(page_num)
-    return paginator, page_obj, page_num
 
 
 def index(request):
     paginator, questions, page_num = pagination(request, QUESTIONS)
-    return render(request, "index.html", {"questions": questions, "paginator": paginator})
 
+    return render(request, "index.html", {"questions": questions, "paginator": paginator})
 
 
 def hot(request):
