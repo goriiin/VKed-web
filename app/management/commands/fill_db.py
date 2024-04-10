@@ -34,7 +34,7 @@ class Command(BaseCommand):
                                              first_name=get_rand_str(2, 4, False),
                                              last_name=get_rand_str(2, 4, False),
                                              date_joined=timezone.now())
-                Profile.objects.create(user=u, avatar='acc.png')
+                Profile.objects.create(user=u)
             print('Created profiles')
         print('Generate tags?')
         if input() == 'yes':
