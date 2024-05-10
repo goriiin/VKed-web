@@ -1,5 +1,5 @@
-from django.contrib.auth.models import User
 from django.db import models
+from django.contrib.auth.models import User
 from django.utils import timezone
 
 
@@ -26,7 +26,6 @@ class Tag(models.Model):
 
 # =================Profile============================== #
 
-
 class Profile(models.Model):
     updated_time = models.DateTimeField(auto_now=True)
     avatar_path = models.ImageField(null=True, blank=True)
@@ -35,11 +34,10 @@ class Profile(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return self.user.nickname
+        return self.user.username
 
 
 # ============Question=================================== #
-
 
 class QuestionQueryset(models.QuerySet):
     def order_rating(self):
@@ -60,32 +58,29 @@ class QuestionManager(models.Manager):
 class Question(models.Model):
     title = models.CharField(max_length=128)
     content = models.TextField()
-    tags = models.ManyToManyField(Tag, related_name='questions')
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
-
-    created_time = models.DateTimeField(default=timezone.now())
-    objects = QuestionManager()
-
+    created_time = models.DateTimeField(default=timezone.now)
     likes_count = models.IntegerField(default=0)
     answers_count = models.IntegerField(default=0)
+
+    tags = models.ManyToManyField(Tag, related_name='questions')
+
+    objects = QuestionManager()
 
 
 # ===============QuestionLike================================ #
 
-
 class QuestionLikeQuerySet(models.QuerySet):
     def add_vote(self, user_id, question_id, vote):
-        q = Answer.objects.get(pk=question_id)
+        q = Question.objects.get(pk=question_id)
         try:
-            self.create(user_id=user_id, question_id=question_id, rating=vote)
+            self.create(user_id=user_id, question_id=question_id, vote=vote)
             q.likes_count += vote
-
         except:
             item = self.get(user_id=user_id, question_id=question_id)
-            q.likes_count -= item.rating
+            q.likes_count -= item.vote
             q.likes_count += vote
             item.rating = vote
-
             item.save()
         q.save()
 
@@ -96,8 +91,9 @@ class QuestionLikeManager(models.Manager):
 
 
 class QuestionLike(models.Model):
-    user_id = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(Profile, on_delete=models.CASCADE)
     question_id = models.ForeignKey(Question, on_delete=models.CASCADE)
+    vote = models.BooleanField()
 
     objects = QuestionLikeManager()
 
@@ -118,7 +114,7 @@ class AnswerManager(models.Manager):
 
 
 class Answer(models.Model):
-    objects = AnswerManager
+    objects = AnswerManager()
     answer = models.TextField()
     created_time = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
@@ -132,35 +128,32 @@ class Answer(models.Model):
 
 # =============AnsweLiker================================== #
 
-
 class AnswerLikeQuerySet(models.QuerySet):
     def add_vote(self, user_id, answer_id, vote):
         a = Answer.objects.get(pk=answer_id)
         try:
-            self.create(user_id=user_id, answer_id=answer_id, rating=vote)
+            self.create(user_id=user_id, answer_id=answer_id, vote=vote)
             a.likes_count += vote
-
         except:
             item = self.get(user_id=user_id, answer_id=answer_id)
-            a.likes_count -= item.rating
+            a.likes_count -= item.vote
             a.likes_count += vote
             item.rating = vote
-
             item.save()
         a.save()
 
 
 class AnswerLikeManager(models.Manager):
-    def add_vote(self, user_id, question_id, vote):
-        self.get_queryset().add_vote(user_id=user_id, question_id=question_id, vote=vote)
+    def add_vote(self, user_id, answer_id, vote):
+        self.get_queryset().add_vote(user_id=user_id, answer_id=answer_id, vote=vote)
 
 
 class AnswerLike(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
-    rating = models.IntegerField(default=0)
-    user_id = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    vote = models.IntegerField(default=0)
+    user_id = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
-    objects = AnswerLikeManager
+    objects = AnswerLikeManager()
 
     class Meta:
         unique_together = ('user_id', 'answer')
