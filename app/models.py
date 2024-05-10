@@ -11,6 +11,9 @@ class TagQuerySet(models.QuerySet):
 
 
 class TagManager(models.Manager):
+    def get_queryset(self):
+        return TagQuerySet(self.model, using=self._db)
+
     def is_tag(self, tag):
         return self.get_queryset().is_tag(tag)
 
@@ -34,7 +37,10 @@ class Profile(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return self.user.username
+        return self.user.name
+
+    def __int__(self):
+        return self.pk
 
 
 # ============Question=================================== #
@@ -44,21 +50,33 @@ class QuestionQueryset(models.QuerySet):
         return self.order_by('-likes_count')
 
     def order_time(self):
-        return self.order_by('-created_date')
+        return self.order_by('-created_time')
+
+    def tags(self, tag_name):
+        return self.filter(tags__tag_name=tag_name)
+
+    def get_tags(self):
+        return [tag.tag_name for tag in self.tags.all()]
 
 
 class QuestionManager(models.Manager):
+    def get_queryset(self):
+        return QuestionQueryset(self.model, using=self._db)
+
     def hot(self):
         return self.get_queryset().order_rating()
 
     def news(self):
         return self.get_queryset().order_time()
 
+    def get_tags(self):
+        return self.get_queryset().get_tags()
+
 
 class Question(models.Model):
     title = models.CharField(max_length=128)
     content = models.TextField()
-    author = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
     created_time = models.DateTimeField(default=timezone.now)
     likes_count = models.IntegerField(default=0)
     answers_count = models.IntegerField(default=0)
@@ -66,6 +84,9 @@ class Question(models.Model):
     tags = models.ManyToManyField(Tag, related_name='questions')
 
     objects = QuestionManager()
+
+    def __int__(self):
+        return self.pk
 
 
 # ===============QuestionLike================================ #
@@ -75,17 +96,25 @@ class QuestionLikeQuerySet(models.QuerySet):
         q = Question.objects.get(pk=question_id)
         try:
             self.create(user_id=user_id, question_id=question_id, vote=vote)
-            q.likes_count += vote
+            q.likes_count += 1 if vote else -1
+            q.save()
+
         except:
             item = self.get(user_id=user_id, question_id=question_id)
-            q.likes_count -= item.vote
-            q.likes_count += vote
-            item.rating = vote
-            item.save()
-        q.save()
+            if item.vote != vote:
+                q.likes_count += 1 if vote else -1
+                item.rating = vote
+                item.save()
+                q.save()
+
+    def del_vote(self, user_id, question_id, vote):
+        pass
 
 
 class QuestionLikeManager(models.Manager):
+    def get_queryset(self):
+        return QuestionLikeQuerySet(self.model, using=self._db)
+
     def add_vote(self, user_id, question_id, vote):
         self.get_queryset().add_vote(user_id=user_id, question_id=question_id, vote=vote)
 
@@ -109,6 +138,9 @@ class AnswerQuerySet(models.QuerySet):
 
 
 class AnswerManager(models.Manager):
+    def get_queryset(self):
+        return AnswerQuerySet(self.model, using=self._db)
+
     def hots(self):
         return self.get_queryset().hots()
 
@@ -125,6 +157,9 @@ class Answer(models.Model):
     def __str__(self):
         return self.answer
 
+    def __int__(self):
+        return self.pk
+
 
 # =============AnsweLiker================================== #
 
@@ -133,17 +168,22 @@ class AnswerLikeQuerySet(models.QuerySet):
         a = Answer.objects.get(pk=answer_id)
         try:
             self.create(user_id=user_id, answer_id=answer_id, vote=vote)
-            a.likes_count += vote
+            a.likes_count += 1 if vote else -1
+            a.save()
+
         except:
             item = self.get(user_id=user_id, answer_id=answer_id)
-            a.likes_count -= item.vote
-            a.likes_count += vote
-            item.rating = vote
-            item.save()
-        a.save()
+            if item.vote != vote:
+                a.likes_count += 1 if vote else -1
+                item.rating = vote
+                item.save()
+                a.save()
 
 
 class AnswerLikeManager(models.Manager):
+    def get_queryset(self):
+        return AnswerLikeQuerySet(self.model, using=self._db)
+
     def add_vote(self, user_id, answer_id, vote):
         self.get_queryset().add_vote(user_id=user_id, answer_id=answer_id, vote=vote)
 

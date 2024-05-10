@@ -5,12 +5,12 @@
         <div class="col-2 p-2">
             <div class="border mb-3 w-100 gray pic">
                 <img
-                        src="{% static 'img/photo_2024-03-09_21-45-42.jpg' %}"
+                        src="{% static 'img/default.jpg' %}"
                         class="img-fluid rounded-start"
                         alt="..."/>
             </div>
             <div class="input-group flex-nowrap">
-                <input type="number" value="{{  question.likes_count }}" class="form-control my-input"/>
+                <input type="number" value="{{ item.likes_count }}" class="form-control my-input"/>
             </div>
         </div>
 
@@ -27,7 +27,7 @@
                     <div class="row mb-0">
                         <div class="col">
                             <span>Tags</span>
-                           {% for t in tags|index:forloop.counter0 %}
+                            {% for t in item.tags.all %}
                                 <a href="{% url 'tag' tag_name=t %}">{{ t }}</a>
                             {% endfor %}
                         </div>
