@@ -10,14 +10,14 @@
                         alt="..."/>
             </div>
             <div class="input-group flex-nowrap">
-                <input type="number" value="5" class="form-control my-input"/>
+                <input type="number" value="{{ item.likes_count }}" class="form-control my-input"/>
             </div>
         </div>
 
         <div class="col">
             <div class="card-body">
                 <p class="card-text">
-                    {{ item.text }}
+                    {{ item.answer }}
                 </p>
                 <div class="mb-3 form-check">
                     <input type="checkbox" class="form-check-input" id="{{ item.id }}">

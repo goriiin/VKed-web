@@ -1,8 +1,9 @@
+from django.contrib.auth import authenticate, login
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 
 from app import model_manager
-
+from django.urls import reverse
 
 def index(request):
     context = model_manager.pagination(request, 'index')
@@ -17,7 +18,8 @@ def hot(request):
 
 def question(request, question_id):
     context = model_manager.this_question(request, question_id)
-    context['form'] = settings.give_answer(request, question_id)
+    if context['page'] == -1:
+        return HttpResponseNotFound('Bad request')
     return render(request, 'question.html', context)
 
 
@@ -30,7 +32,14 @@ def ask(request):
     return render(request, "ask.html")
 
 
-def login(request):
+def log_in(request):
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    user = authenticate(request, username=username, password=password)
+    print(user)
+    if user is not None:
+        login(request, user)
+        return redirect(reverse('index'))
     return render(request, "login.html")
 
 

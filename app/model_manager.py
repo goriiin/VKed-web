@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 
-from app.models import Question, Tag
+from app.models import Question, Tag, Answer
 
 
 def index_news():
@@ -43,3 +43,20 @@ def pagination(request, type_req, count=4, tag_name=None):
             'paginator': paginator}
 
 
+def this_question(request, question_id, count=4):
+    page_num = check_page(request)
+    try:
+        question = Question.objects.get(pk=question_id)
+    except:
+        return {'page': -1}
+
+    tags = question.tags.all()
+    answers = Answer.objects.filter(question=question_id).order_by('-likes_count')
+
+    paginator = Paginator(answers, count)
+    answers = paginator.get_page(page_num)
+
+    return {
+        'question': question, 'tags': tags, 'answers': answers,
+        'paginator': paginator, 'page': 0
+    }
