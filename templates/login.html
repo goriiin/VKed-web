@@ -1,4 +1,5 @@
 {% extends 'layouts/base.html' %}
+{% load django_bootstrap5 %}
 {% load static %}
 
 {% block nav %}
@@ -13,21 +14,11 @@
 
 {% block content %}
     <div class="col-8">
-        <form method="post">
-            {% include 'layouts/error.html' with ERROR="ошибка" %}
-            <div class="form-floating mb-3 col-6">
-                <input type="text" name="username" class="form-control my-input" id="LoginInpput" placeholder="VasyaPupkin2004">
-                <label for="LoginInpput">Login</label>
-            </div>
-            <div class="form-floating col-6 mb-3">
-                <input type="password" id="inputPassword1" class="form-control my-input"
-                       aria-describedby="passwordHelpBlock" placeholder="Sl0jnu1p@r0l1111" name="password">
-                <label for="inputPassword1">Password</label>
-            </div>
+        <form method="post" class="mb-3">
+            {% bootstrap_form form %}
             {% csrf_token %}
             <button type="submit" class="btn my-btn mb-3 col-2 me-3">Success</button>
-            <a class="col-6 float m-3r" href="signup"> or create new account</a>
-
+            <a class="col-6 float m-3r" href="{% url 'signup' %}"> or create new account</a>
         </form>
 
     </div>

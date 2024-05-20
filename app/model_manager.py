@@ -1,6 +1,25 @@
 from django.core.paginator import Paginator
 
-from app.models import Question, Tag, Answer
+from app.forms import LoginForm, RegisterForm, AskForm
+from app.models import Question, Answer
+
+
+def get_login_form(request):
+    if request.method == "POST":
+        return LoginForm(data=request.POST)
+    return LoginForm()
+
+
+def get_signup_form(request):
+    if request.method == "POST":
+        return RegisterForm(data=request.POST)
+    return RegisterForm()
+
+
+def get_ask(request):
+    if request.method == "POST":
+        return AskForm(data=request.POST)
+    return AskForm()
 
 
 def index_news():

@@ -1,6 +1,6 @@
 {% extends "layouts/base.html"%}
 {% load static %}
-
+{% load django_bootstrap5 %}
 {% block nav %}
     {% include 'layouts/nav.html' %}
 {% endblock %}
@@ -13,22 +13,11 @@
 
 {% block content %}
     <div class="col-8">
-        {% include 'layouts/error.html' with ERROR="ошибка"%}
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control my-input" id="floatingInput" placeholder="name@example.com">
-            <label class="gray-input" for="floatingInput">Заголовок</label>
-        </div>
-        <div class="form-floating mb-3">
-            <textarea class="form-control my-input" placeholder="Leave a comment here" id="floatingTextarea2"
-                      style="min-height: 350px; max-height: 350px; resize: none"></textarea>
-            <label for="floatingTextarea2">Текст</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control my-input" id="floatingPassword" placeholder="Пароль">
-            <label for="floatingPassword">Теги</label>
-        </div>
-
-        <button type="button" class="btn my-btn">Success</button>
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn my-btn">Success</button>
+    </form>
 
     </div>
 {% endblock %}

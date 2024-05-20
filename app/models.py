@@ -29,6 +29,22 @@ class Tag(models.Model):
 
 # =================Profile============================== #
 
+class ProfileQuerySet(models.QuerySet):
+    def get_queryset(self):
+        return ProfileQuerySet(self.model, using=self._db)
+
+    def is_profile(self, profile):
+        return self.get_queryset().is_profile(profile)
+
+
+class ProfileManager(models.Manager):
+    def get_queryset(self):
+        return ProfileQuerySet(self.model, using=self._db)
+
+    def is_profile(self, profile):
+        return self.get_queryset().is_profile(profile)
+
+
 class Profile(models.Model):
     updated_time = models.DateTimeField(auto_now=True)
     avatar_path = models.ImageField(null=True, blank=True)
