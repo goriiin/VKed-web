@@ -1,9 +1,7 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
+{% load django_bootstrap5 %}
 
-{% block nav %}
-    {% include 'layouts/nav.html' %}
-{% endblock %}
 
 
 {% block content %}
@@ -24,14 +22,21 @@
             </div>
 
             <hr style="border: 1px solid white">
-            <div class="form-floating mb-3 g-5">
-            <textarea class="form-control my-input" placeholder="Leave a comment here" id="floatingTextarea"
-                      style="min-height: 300px; max-height: 300px; resize: none"></textarea>
-                <label for="floatingTextarea">Your answer</label>
-            </div>
-            <div class="mb-3">
-                <button type="button" class="btn btn-outline-primary me-3 mb-3 float-end">send</button>
-            </div>
+            {% if request.user.is_authenticated %}
+                <form method="post">
+                    {% bootstrap_form form %}
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-outline-primary me-3 mb-3 float-end">send</button>
+                    </div>
+                </form>
+            {% endif %}
+            {#            <div class="form-floating mb-3 g-5">#}
+            {#            <textarea class="form-control my-input" placeholder="Leave a comment here" id="floatingTextarea"#}
+            {#                      style="min-height: 300px; max-height: 300px; resize: none"></textarea>#}
+            {#                <label for="floatingTextarea">Your answer</label>#}
+            {#            </div>#}
+
         </div>
     </div>
 {% endblock %}

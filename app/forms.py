@@ -1,7 +1,7 @@
 from django import forms
 from django.utils import timezone
 
-from app.models import User, Profile, Question, Tag
+from app.models import User, Profile, Question, Tag, Answer
 from django.core.exceptions import ValidationError
 
 
@@ -92,3 +92,25 @@ class AskForm(forms.Form):
             except:
                 question.tags.add(Tag.objects.create(tag_name=t))
         return question
+
+
+class AnswerForm(forms.Form):
+    text = forms.CharField(widget=forms.Textarea)
+
+    class Meta:
+        model = Answer
+        fields = ['description']
+
+    def clean_text(self):
+        super(AnswerForm, self).clean()
+        text = self.cleaned_data.get('text')
+        return text
+
+    class Meta:
+        model = Answer
+        help_texts = {'text': 'Введите ответ'}
+
+    def save(self):
+        text = self.clean_text()
+        ans = Answer.objects.create(answer=text, created_time=timezone.now())
+        return ans

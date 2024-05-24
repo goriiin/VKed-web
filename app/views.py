@@ -1,13 +1,10 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
-from django.utils import timezone
-from app import model_manager
 from django.urls import reverse
+from django.utils import timezone
 
-from app.forms import LoginForm
+from app import model_manager
 
 
 def index(request):
@@ -21,11 +18,14 @@ def hot(request):
     return render(request, 'hot.html', context)
 
 
-@login_required(login_url='login', redirect_field_name='continue')
 def question(request, question_id):
     context = model_manager.this_question(request, question_id)
-    if context['page'] == -1:
-        return HttpResponseNotFound('Bad request')
+    form = model_manager.get_answer_form(request)
+    context['form'] = form
+    print(question_id)
+
+    model_manager.answer(request, question_id)
+
     return render(request, 'question.html', context)
 
 
@@ -79,4 +79,5 @@ def settings(request):
 
 
 def logout_view(request):
-    return redirect("/login")
+    logout(request)
+    return redirect(reverse('login'))

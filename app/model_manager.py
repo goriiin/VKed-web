@@ -1,7 +1,13 @@
 from django.core.paginator import Paginator
 
-from app.forms import LoginForm, RegisterForm, AskForm
+from app.forms import LoginForm, RegisterForm, AskForm, AnswerForm
 from app.models import Question, Answer
+
+
+def get_answer_form(request):
+    if request.method == "POST":
+        return AnswerForm(request.POST)
+    return AnswerForm()
 
 
 def get_login_form(request):
@@ -77,5 +83,18 @@ def this_question(request, question_id, count=4):
 
     return {
         'question': question, 'tags': tags, 'answers': answers,
-        'paginator': paginator, 'page': 0
+        'paginator': paginator
     }
+
+
+def answer(request, question_id):
+    if request.method == "POST":
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            a = form.save()
+            question = Question.objects.get(pk=question_id)
+            a.question = question
+            a.author = request.user.profile
+
+            a.save()
+

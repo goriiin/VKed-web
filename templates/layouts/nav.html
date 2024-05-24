@@ -44,7 +44,7 @@
             <div class="d-flex flex-column justify-content-between">
 
                 <div class="white">
-                    Dr. Pepper
+                    {{ request.user.username }}
                 </div>
                 <div>
                     <a href="{% url 'settings' %}">Settings</a>

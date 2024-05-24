@@ -4,14 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <title>ASK_Koshenkov</title>
-    <link rel="stylesheet" href="../static/bootstrap-5.3.3-dist/css/bootstrap.min.css">
-    <link rel="shortcut icon" href="../static/img/terminal_black_24dp.svg"/>
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.css' %}">
+    <link rel="shortcut icon" href='{% static "img/terminal_black_24dp.svg" %}'/>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" >
 </head>
 <body class="main">
 <div>
 
     {% block nav %}
+        {% if request.user.is_authenticated %}
+            {% include 'layouts/nav.html' %}
+        {% else %}
+            {% include 'layouts/unsaligned_nav.html' %}
+        {% endif %}
     {% endblock %}
 
     <main class="container-fluid container-lg mt-3">
@@ -69,5 +74,5 @@
     </main>
 </div>
 </body>
-<script src="../static/bootstrap-5.3.3-dist/js/bootstrap.bundle.js"></script>
+<script src="{% static 'bootstrap-5.3.3-dist/js/bootstrap.bundle.js' %}"></script>
 </html>
