@@ -9,6 +9,10 @@ class TagQuerySet(models.QuerySet):
     def is_tag(self, tag):
         return self.filter(tag_name=tag)
 
+    def increment_used_times(self, tag_ids):
+        # Увеличиваем счетчик использований для переданных тегов
+        self.filter(id__in=tag_ids).update(used_times=models.F('used_times') + 1)
+
 
 class TagManager(models.Manager):
     def get_queryset(self):
@@ -20,6 +24,7 @@ class TagManager(models.Manager):
 
 class Tag(models.Model):
     tag_name = models.CharField(max_length=32, unique=True)
+    used_times = models.PositiveIntegerField(default=0)  # Счетчик использований тега
 
     objects = TagManager()
 
@@ -30,12 +35,12 @@ class Tag(models.Model):
 # =================Profile============================== #
 
 class ProfileQuerySet(models.QuerySet):
-    def get_queryset(self):
-        return ProfileQuerySet(self.model, using=self._db)
-
     def is_profile(self, profile):
-        return self.get_queryset().is_profile(profile)
+        return self.filter(user__username=profile)
 
+    def increment_answers_count(self, profile_id):
+        # Увеличиваем счетчик ответов для профиля
+        self.filter(id=profile_id).update(answers_count=models.F('answers_count') + 1)
 
 class ProfileManager(models.Manager):
     def get_queryset(self):
@@ -48,12 +53,13 @@ class ProfileManager(models.Manager):
 class Profile(models.Model):
     updated_time = models.DateTimeField(auto_now=True)
     avatar_path = models.ImageField(null=True, blank=True)
+    answers_count = models.PositiveIntegerField(default=0)  # Счетчик ответов пользователя
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    objects = models.Manager()
+    objects = ProfileManager()
 
     def __str__(self):
-        return self.user.name
+        return self.user.username  # Используйте username вместо name
 
     def __int__(self):
         return self.pk
@@ -73,6 +79,10 @@ class QuestionQueryset(models.QuerySet):
 
     def get_tags(self):
         return [tag.tag_name for tag in self.tags.all()]
+
+    def increment_answers_count(self, question_id):
+        # Увеличиваем счетчик ответов для вопроса
+        self.filter(id=question_id).update(answers_count=models.F('answers_count') + 1)
 
 
 class QuestionManager(models.Manager):
@@ -103,6 +113,13 @@ class Question(models.Model):
 
     def __int__(self):
         return self.pk
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        # После сохранения вопроса, обновляем счетчик использований тегов
+        if self.pk:  # Обновляем только если объект уже существует
+            Tag.objects.get_queryset().increment_used_times(self.tags.values_list('id', flat=True))
 
 
 # ===============QuestionLike================================ #
@@ -176,6 +193,16 @@ class Answer(models.Model):
     def __int__(self):
         return self.pk
 
+    def save(self, *args, **kwargs):
+        # Перед сохранением ответа проверяем, создается ли он
+        created = self._state.adding
+
+        super().save(*args, **kwargs)
+
+        if created:
+            # После создания ответа увеличиваем счетчики
+            Question.objects.get_queryset().increment_answers_count(self.question.id)
+            Profile.objects.get_queryset().increment_answers_count(self.author.id)
 
 # =============AnsweLiker================================== #
 
