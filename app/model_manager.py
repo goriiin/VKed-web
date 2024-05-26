@@ -124,18 +124,23 @@ def like(request):
         q = Question.objects.get_queryset().get(pk=__id)
         QuestionLike.objects.add_vote(user_id=user, question_id=q, vote=flag)
         q.likes_count = QuestionLike.objects.filter(question_id=q.id).aggregate(Sum('vote'))['vote__sum']
+        q.save()
         return QuestionLike.objects.filter(question_id=__id).aggregate(Sum('vote'))['vote__sum']
     else:
         a = Answer.objects.get_queryset().get(pk=__id)
-        AnswerLike.objects.add_vote(user_id=user, answer_id=a.id, vote=flag)
+        AnswerLike.objects.add_vote(user_id=user, answer_id=a, vote=flag)
         a.likes_count = AnswerLike.objects.filter(answer_id=a.id).aggregate(Sum('vote'))['vote__sum']
         a.save()
+        print(AnswerLike.objects.filter(answer_id=a.id).aggregate(Sum('vote'))['vote__sum'])
         return AnswerLike.objects.filter(answer_id=a.id).aggregate(Sum('vote'))['vote__sum']
 
 
 def correct(request):
-    flag = request.POST.get('flag')
-    ans_id = request.POST.get('id')
+    body = json.loads(request.body)
+    flag = body['flag']
+    ans_id = body['id']
 
     a = Answer.objects.get(pk=ans_id)
-    a.objects.update(correct=flag)
+    a.correct = flag
+    a.save()
+    return flag

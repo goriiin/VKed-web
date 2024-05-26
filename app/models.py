@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Sum
 from django.utils import timezone
 
 
@@ -129,17 +130,20 @@ class QuestionLikeQuerySet(models.QuerySet):
             self.create(user_id=user_id, question_id=question_id, vote=vote)
             q.likes_count += vote
             q.save()
+            return q.likes_count
 
         except:
-            item = self.get(user_id=user_id, question_id=question_id)
+            item = QuestionLike.objects.get_queryset().get(user_id=user_id, question_id=question_id)
             if item.vote != vote:
-                q.likes_count += 2 * vote
-                item.rating = vote
+                q.likes_count += vote
+                item.vote = vote
                 item.save()
                 q.save()
-
-    def del_vote(self, user_id, question_id, vote):
-        pass
+            else:
+                item.vote = 0
+                item.save()
+                q.likes_count = QuestionLike.objects.filter(question_id=q.id).aggregate(Sum('vote'))['vote__sum']
+                q.save()
 
 
 class QuestionLikeManager(models.Manager):
@@ -216,13 +220,18 @@ class AnswerLikeQuerySet(models.QuerySet):
             a.likes_count += vote
             a.save()
             item.save()
-
         except:
-            item = self.get(user_id=user_id, answer_id=answer_id)
+            item = AnswerLike.objects.get_queryset().get(user_id=user_id, answer_id=answer_id)
             if item.vote != vote:
-                a.likes_count += 2 * vote
-                item.rating = vote
+                item.vote = vote
                 item.save()
+
+                a.likes_count = AnswerLike.objects.filter(answer_id=a.id).aggregate(Sum('vote'))['vote__sum']
+                a.save()
+            else:
+                item.vote = 0
+                item.save()
+                a.likes_count = AnswerLike.objects.filter(answer_id=a.id).aggregate(Sum('vote'))['vote__sum']
                 a.save()
 
 

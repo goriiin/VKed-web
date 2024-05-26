@@ -1,6 +1,6 @@
 {% load static %}
 
-<article class="col-9 card mb-3 w-100 mid-gray {% if item.correct %} border-success {% endif %}">
+<article class="answer_card col-9 card mb-3 w-100 mid-gray {% if item.correct %} border-success {% endif %}" id="{{ item.id }}">
     <div class="row g-0 ">
         <div class="col-2 p-2">
             <div class="border mb-3 w-100 gray pic">
@@ -12,7 +12,7 @@
 
         </div>
 
-        <div class="col">
+        <div class="col" >
             <div class="card-body">
                 <p class="card-text">
                     {{ item.answer }}
@@ -25,11 +25,11 @@
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input correct-selector" id="{{ item.id }}"
                                 {% if item.correct %} checked {% endif %}>
-                        <label class="form-check-label" for="{{ item.id }} "> Correct</label>
+                        <label class="form-check-label" for="{{ item.id }}">Correct</label>
                     </div>
                 {% endif %}
                 <div class="row mb-0 me-1">
-                    <div class="d-flex justify-content-between align-items-center answer_card" id="{{ item.id }}">
+                    <div class="d-flex justify-content-between align-items-center" id="{{ item.id }}">
                         <div class="btn-group">
                             {% if request.user.is_authenticated %}
                                 <button type="button" class="btn btn-sm btn-outline-primary answer-like-btn">

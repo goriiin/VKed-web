@@ -101,7 +101,9 @@ def logout_view(request):
 
 @login_required(login_url='login')
 def correct(request):
-    model_manager.correct(request)
+    flag = model_manager.correct(request)
+
+    return JsonResponse({'flag': flag})
 
 
 @login_required(login_url='login')
