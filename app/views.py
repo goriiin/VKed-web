@@ -39,6 +39,7 @@ def tag(request, tag_name):
     context = model_manager.pagination(request, 'tag', tag_name=tag_name)
     context['pop_tags'] = model_manager.get_popular_tags()
     context['pop_users'] = model_manager.get_popular_users()
+    context['tag'] = tag_name
     return render(request, 'tag.html', context)
 
 

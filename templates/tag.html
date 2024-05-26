@@ -4,7 +4,9 @@
 
 {% block head %}
     <div class="d-flex gap-3 align-items-center">
-        <h3> {{ tag }}</h3>
+        <a href="{% url 'index' %}">New Questions</a>
+        <a href="{% url 'hot' %}">Hot Questions</a>
+        <h3>{{ tag }}</h3>
     </div>
 {% endblock head %}
 

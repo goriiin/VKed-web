@@ -36,7 +36,7 @@
                     <div class="row">
 
                         {% for tag in pop_tags %}
-                            <a class="col link-success" href="/tag/{{ tag.tag_name }}">{{ tag.tag_name }}</a>
+                            <h6 class="col link-success" href="/tag/{{ tag.tag_name }}">{{ tag.tag_name }}</h6>
                         {% endfor %}
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                 <h3 class="mt-5 white">Best Members</h3>
                 <div>
                     {% for u in pop_users %}
-                        <a href="" class="d-block link-success">{{ u.user.username }}</a>
+                        <h6 href="" class="d-block link-success">{{ u.user.username }}</h6>
                     {% endfor %}
                 </div>
             </div>
