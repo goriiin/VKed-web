@@ -94,3 +94,12 @@ def settings(request):
 def logout_view(request):
     logout(request)
     return redirect(reverse('login'))
+
+
+
+# Нажимаем лайк - если есть +1, если нет - 0, дизлайк соответственно, только -1 и 0
+def like(request):
+    pass
+
+def dislike(request):
+    pass

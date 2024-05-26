@@ -36,7 +36,7 @@
                     <div class="row">
 
                         {% for tag in pop_tags %}
-                            <h6 class="col link-success" href="/tag/{{ tag.tag_name }}">{{ tag.tag_name }}</h6>
+                            <a class="col link-success" href="/tag/{{ tag.tag_name }}">{{ tag.tag_name }}</a>
                         {% endfor %}
                     </div>
                 </div>

@@ -38,7 +38,7 @@ class Command(BaseCommand):
         for i in range(ratio * 100):
             question = random.choice(Question.objects.all())
             user = random.choice(User.objects.all())
-            Answer.objects.create(answer=fake.paragraph(), question=question, author=user.profile)
+            Answer.objects.create(answer=fake.paragraph(), question=question, author=user.profile, correct=fake.boolean())
 
         # Create question likes
         for i in range(ratio * 200):

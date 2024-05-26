@@ -14,6 +14,7 @@ urlpatterns = [
     path('settings/', views.settings, name='settings'),
     path('tag/<str:tag_name>/', views.tag, name='tag'),
     path('logout/', views.logout_view, name='logout'),
+    # path('/like', views.like, name='like'),
 ]
 
 

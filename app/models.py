@@ -181,6 +181,7 @@ class Answer(models.Model):
     answer = models.TextField()
     created_time = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
+    correct = models.BooleanField(default=False, null=False)
 
     likes_count = models.IntegerField(default=0)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, blank=True, null=True)
