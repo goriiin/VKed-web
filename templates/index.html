@@ -1,8 +1,6 @@
 {% extends "layouts/base.html" %}
 {% load static %}
 
-
-
 {% block head %}
     <div class="d-flex gap-3 align-items-center">
         <h3 href="{% url 'index' %}">New Questions</h3>
@@ -19,6 +17,5 @@
         <div class="me-3">
             {% include 'layouts/pagination.html' with items=questions %}
         </div>
-
     </div>
 {% endblock %}

@@ -68,13 +68,13 @@ class Profile(models.Model):
 
 class QuestionQueryset(models.QuerySet):
     def order_rating(self):
-        return self.order_by('-likes_count')
+        return self.order_by('-likes_count').order_by('-created_time')
 
     def order_time(self):
         return self.order_by('-created_time')
 
     def tags(self, tag_name):
-        return self.filter(tags__tag_name=tag_name)
+        return self.filter(tags__tag_name=tag_name).order_by('created_time')
 
     def get_tags(self):
         return [tag.tag_name for tag in self.tags.all()]
@@ -127,13 +127,13 @@ class QuestionLikeQuerySet(models.QuerySet):
         q = Question.objects.get(pk=question_id)
         try:
             self.create(user_id=user_id, question_id=question_id, vote=vote)
-            q.likes_count += 1 if vote else -1
+            q.likes_count += vote
             q.save()
 
         except:
             item = self.get(user_id=user_id, question_id=question_id)
             if item.vote != vote:
-                q.likes_count += 1 if vote else -1
+                q.likes_count += 2 * vote
                 item.rating = vote
                 item.save()
                 q.save()
@@ -153,7 +153,7 @@ class QuestionLikeManager(models.Manager):
 class QuestionLike(models.Model):
     user_id = models.ForeignKey(Profile, on_delete=models.CASCADE)
     question_id = models.ForeignKey(Question, on_delete=models.CASCADE)
-    vote = models.BooleanField()
+    vote = models.IntegerField()
 
     objects = QuestionLikeManager()
 
@@ -186,7 +186,6 @@ class Answer(models.Model):
     likes_count = models.IntegerField(default=0)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, blank=True, null=True)
 
-
     def __str__(self):
         return self.answer
 
@@ -206,20 +205,22 @@ class Answer(models.Model):
                 self.author.answers_count += 1
                 self.author.save()
 
+
 # =============AnsweLiker================================== #
 
 class AnswerLikeQuerySet(models.QuerySet):
     def add_vote(self, user_id, answer_id, vote):
         a = Answer.objects.get(pk=answer_id)
         try:
-            self.create(user_id=user_id, answer_id=answer_id, vote=vote)
-            a.likes_count += 1 if vote else -1
+            item = self.create(user_id=user_id, answer_id=answer_id, vote=vote)
+            a.likes_count += vote
             a.save()
+            item.save()
 
         except:
             item = self.get(user_id=user_id, answer_id=answer_id)
             if item.vote != vote:
-                a.likes_count += 1 if vote else -1
+                a.likes_count += 2 * vote
                 item.rating = vote
                 item.save()
                 a.save()
@@ -235,7 +236,7 @@ class AnswerLikeManager(models.Manager):
 
 class AnswerLike(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
-    vote = models.IntegerField(default=0)
+    vote = models.IntegerField()
     user_id = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
     objects = AnswerLikeManager()

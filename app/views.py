@@ -1,10 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
-
+import json
 from app import model_manager
+from app.models import Question, Answer
 
 
 def index(request):
@@ -97,10 +99,13 @@ def logout_view(request):
     return redirect(reverse('login'))
 
 
-# Нажимаем лайк - если есть +1, если нет - 0, дизлайк соответственно, только -1 и 0
+@login_required(login_url='login')
+def correct(request):
+    model_manager.correct(request)
+
+
+@login_required(login_url='login')
 def like(request):
-    pass
+    count = model_manager.like(request)
 
-
-def dislike(request):
-    pass
+    return JsonResponse({'count': count})

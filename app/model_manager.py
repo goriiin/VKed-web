@@ -1,7 +1,9 @@
+import json
+
 from django.core.paginator import Paginator
-from django.db.models import F
+from django.db.models import F, Sum
 from app.forms import LoginForm, RegisterForm, AskForm, AnswerForm
-from app.models import Question, Answer, Tag, Profile
+from app.models import Question, Answer, Tag, Profile, QuestionLike, AnswerLike
 
 
 def get_popular_tags():
@@ -108,3 +110,32 @@ def answer(request, question_id):
             Profile.objects.filter(id=request.user.profile.id).update(answers_count=F('answers_count') + 1)
             Question.objects.filter(id=question_id).update(answers_count=F('answers_count') + 1)
             a.save()
+
+
+def like(request):
+    body = json.loads(request.body)
+    req_type = body['type']
+    flag = body['flag']
+    user = request.user.profile
+
+    # print(user)
+    __id = body['id']
+    if req_type == 'question':
+        q = Question.objects.get_queryset().get(pk=__id)
+        QuestionLike.objects.add_vote(user_id=user, question_id=q, vote=flag)
+        q.likes_count = QuestionLike.objects.filter(question_id=q.id).aggregate(Sum('vote'))['vote__sum']
+        return QuestionLike.objects.filter(question_id=__id).aggregate(Sum('vote'))['vote__sum']
+    else:
+        a = Answer.objects.get_queryset().get(pk=__id)
+        AnswerLike.objects.add_vote(user_id=user, answer_id=a.id, vote=flag)
+        a.likes_count = AnswerLike.objects.filter(answer_id=a.id).aggregate(Sum('vote'))['vote__sum']
+        a.save()
+        return AnswerLike.objects.filter(answer_id=a.id).aggregate(Sum('vote'))['vote__sum']
+
+
+def correct(request):
+    flag = request.POST.get('flag')
+    ans_id = request.POST.get('id')
+
+    a = Answer.objects.get(pk=ans_id)
+    a.objects.update(correct=flag)

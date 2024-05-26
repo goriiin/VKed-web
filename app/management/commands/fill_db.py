@@ -52,13 +52,13 @@ class Command(BaseCommand):
             question = random.choice(Question.objects.all())
             profile = random.choice(Profile.objects.all())
             if not QuestionLike.objects.filter(user_id=profile, question_id=question).exists():
-                QuestionLike.objects.add_vote(user_id=profile, question_id=question, vote=fake.boolean())
+                QuestionLike.objects.add_vote(user_id=profile, question_id=question, vote=random.choice([-1, 1]))
 
         # Create answer likes
         for i in range(ratio * 200):
             answer = random.choice(Answer.objects.all())
             profile = random.choice(Profile.objects.all())
             if not AnswerLike.objects.filter(user_id=profile, answer_id=answer.id).exists():
-                AnswerLike.objects.add_vote(user_id=profile, answer_id=answer.id, vote=fake.boolean())
+                AnswerLike.objects.add_vote(user_id=profile, answer_id=answer.id, vote=random.choice([-1, 1]))
 
         self.stdout.write(self.style.SUCCESS(f'Database filled with {ratio}x data'))
