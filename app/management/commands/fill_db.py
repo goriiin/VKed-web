@@ -25,33 +25,40 @@ class Command(BaseCommand):
 
         # Create tags
         for i in range(ratio):
-            Tag.objects.create(tag_name=(fake.word() + f"{i}"))
+            name = fake.word()
+            try:
+                Tag.objects.create(tag_name=name)
+            except:
+                Tag.objects.create(tag_name=f'{name}_{fake.word()}')
 
         # Create questions
         for i in range(ratio * 10):
-            user = random.choice(User.objects.all())
-            tag = random.choice(Tag.objects.all())
-            question = Question.objects.create(title=fake.sentence(), content=fake.paragraph(), author=user.profile)
-            question.tags.add(tag)
+            profile = random.choice(Profile.objects.all())
+
+            question = Question.objects.create(title=fake.sentence(), content=fake.paragraph(), author=profile)
+            count = random.randint(1, 5)
+            for _ in range(count):
+                tag = random.choice(Tag.objects.all())
+                question.tags.add(tag)
 
         # Create answers
         for i in range(ratio * 100):
             question = random.choice(Question.objects.all())
-            user = random.choice(User.objects.all())
-            Answer.objects.create(answer=fake.paragraph(), question=question, author=user.profile, correct=fake.boolean())
+            profile = random.choice(Profile.objects.all())
+            Answer.objects.create(answer=fake.paragraph(), question=question, author=profile, correct=fake.boolean())
 
         # Create question likes
         for i in range(ratio * 200):
             question = random.choice(Question.objects.all())
-            user = random.choice(User.objects.all())
-            if not QuestionLike.objects.filter(user_id=user.profile, question_id=question).exists():
-                QuestionLike.objects.add_vote(user_id=user.profile, question_id=question, vote=fake.boolean())
+            profile = random.choice(Profile.objects.all())
+            if not QuestionLike.objects.filter(user_id=profile, question_id=question).exists():
+                QuestionLike.objects.add_vote(user_id=profile, question_id=question, vote=fake.boolean())
 
         # Create answer likes
         for i in range(ratio * 200):
             answer = random.choice(Answer.objects.all())
-            user = random.choice(User.objects.all())
-            if not AnswerLike.objects.filter(user_id=user.profile, answer_id=answer.id).exists():
-                AnswerLike.objects.add_vote(user_id=user.profile, answer_id=answer.id, vote=fake.boolean())
+            profile = random.choice(Profile.objects.all())
+            if not AnswerLike.objects.filter(user_id=profile, answer_id=answer.id).exists():
+                AnswerLike.objects.add_vote(user_id=profile, answer_id=answer.id, vote=fake.boolean())
 
         self.stdout.write(self.style.SUCCESS(f'Database filled with {ratio}x data'))

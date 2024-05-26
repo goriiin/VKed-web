@@ -43,7 +43,7 @@ def tag(request, tag_name):
     return render(request, 'tag.html', context)
 
 
-@login_required(login_url='login', redirect_field_name='continue')
+@login_required(login_url='login')
 def ask(request):
     form = model_manager.get_ask(request)
     if request.method == 'POST':
@@ -86,6 +86,7 @@ def signup(request):
                                                    'pop_users': model_manager.get_popular_users()})
 
 
+@login_required(login_url='login')
 def settings(request):
     return render(request, "settings.html", context={'pop_tags': model_manager.get_popular_tags(),
                                                      'pop_users': model_manager.get_popular_users()})
@@ -96,10 +97,10 @@ def logout_view(request):
     return redirect(reverse('login'))
 
 
-
 # Нажимаем лайк - если есть +1, если нет - 0, дизлайк соответственно, только -1 и 0
 def like(request):
     pass
+
 
 def dislike(request):
     pass

@@ -15,17 +15,14 @@
                 <h5 class="card-title">
                     <a href="{% url 'question' item.id %}">{{ item.title }}</a>
                 </h5>
-                <p class="card-text">
-                    {{ item.text }}
-                </p>
                 <div class="col">
                     <a class="row container mb-3" href="{% url 'question' item.id %}">
                         answers ({{ item.answers_count }})</a>
                     <div class="row mb-1">
                         <div class="col">
-                            <span>Tags</span>
+                            <span class="text-muted">Tags</span>
                             {% for t in item.tags.all %}
-                                <a href="{% url 'tag' tag_name=t %}">{{ t }}</a>
+                                <a href="{% url 'tag' tag_name=t %}" class="link-info">{{ t }}</a>
                             {% endfor %}
                         </div>
                     </div>
@@ -46,7 +43,7 @@
                             </button>
                             {% endif %}
                         </div>
-                        <div class="text-light">
+                        <div class="text-muted">
                             <i class="fas fa-star"></i> Rating: <span id="rating">{{ item.likes_count }}</span>
                         </div>
                     </div>
