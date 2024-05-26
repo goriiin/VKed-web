@@ -90,7 +90,15 @@ def signup(request):
 
 @login_required(login_url='login')
 def settings(request):
-    return render(request, "settings.html", context={'pop_tags': model_manager.get_popular_tags(),
+    form = model_manager.get_edit_form(request)
+    if request.method == 'POST':
+        user = request.user
+        if form.is_valid() and form.is_username_valid(old_username=user.username):
+            form.save(old_username=user.username)
+            return redirect(reverse('index'))
+        else:
+            form.add_error('username', 'Для смены аватарки введите ник')
+    return render(request, "settings.html", context={'form': form, 'pop_tags': model_manager.get_popular_tags(),
                                                      'pop_users': model_manager.get_popular_users()})
 
 

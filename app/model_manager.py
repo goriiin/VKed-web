@@ -2,7 +2,7 @@ import json
 
 from django.core.paginator import Paginator
 from django.db.models import F, Sum
-from app.forms import LoginForm, RegisterForm, AskForm, AnswerForm
+from app.forms import LoginForm, RegisterForm, AskForm, AnswerForm, EditProfileForm
 from app.models import Question, Answer, Tag, Profile, QuestionLike, AnswerLike
 
 
@@ -144,3 +144,9 @@ def correct(request):
     a.correct = flag
     a.save()
     return flag
+
+
+def get_edit_form(request):
+    if request.method == 'POST':
+        return EditProfileForm(data=request.POST, files=request.FILES)
+    return EditProfileForm()

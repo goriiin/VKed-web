@@ -116,3 +116,38 @@ class AnswerForm(forms.Form):
         text = self.clean_text()
         ans = Answer.objects.create(answer=text, created_time=timezone.now())
         return ans
+
+
+class EditProfileForm(forms.Form):
+    username = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    avatar = forms.ImageField(required=True, widget=forms.FileInput(attrs={'class': 'form-control'}))
+
+
+    def clean(self):
+        cleaned_data = super(EditProfileForm, self).clean()
+        return cleaned_data
+
+    def is_username_valid(self, old_username):
+        super(EditProfileForm, self).clean()
+        username = self.cleaned_data.get('username')
+
+        if old_username != username:
+            return False
+
+        return True
+
+    def clean_username(self):
+        username = self.data.get('username')
+        return username
+
+    def save(self, old_username):
+        if self.is_valid():
+            username = self.cleaned_data.get('username')
+            avatar = self.cleaned_data.get('avatar')
+
+            if self.is_username_valid(old_username):
+                user = User.objects.get(username=username)
+                user.profile.avatar_path = avatar
+                user.profile.save()
+            else:
+                self.add_error('username', 'Для подтверждения введите ваш никнейм')

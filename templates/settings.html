@@ -1,46 +1,32 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
-
+{% load django_bootstrap5 %}
 
 
 {% block head %}
     <div class="d-flex gap-3 align-items-center">
-        <h1 class="white">Settings</h1>
+        <h4 class="white">Меню смены аватарки</h4>
     </div>
 {% endblock %}
 {% block content %}
     <div class="col-8">
-        <div class="form-floating mb-3 col-6">
-            <input type="text" class="form-control my-input" id="LoginInpput" placeholder="VasyaPupkin2004">
-            <label for="LoginInpput">Login</label>
-        </div>
-        <div class="form-floating mb-3 col-6">
-            <input type="email" class="form-control my-input" id="EmailInput" placeholder="name@example.com">
-            <label for="EmailInput">Email address</label>
-        </div>
-        <div class="form-floating mb-3 col-6">
-            <input type="text" class="form-control my-input" id="NickInput" placeholder="Vasya Pupkin">
-            <label for="NickInput">Nickname</label>
+        <div class="row">
+            <div class="float-left col-5">
+                <p>
+                <h5>
+                    Ваша аватарка
+                </h5>
+
+                </p>
+                <img src="{{ request.user.profile.avatar_path.url }}" class="start-0 border-1 border-white w-75"
+                     alt="...">
+            </div>
         </div>
 
-        <div class="mt-3">
-            <h5 class="white">
-                Ваше фото
-            </h5>
-        </div>
-        <div class="float-left col-3">
-            <img src="{{ request.user.profile.avatar_path.url }}"
-                 class="start-0 border-1 border-white w-75" alt="...">
-        </div>
-        <div class="mt-3">
-            <h5 class="white">
-                Новое фото
-            </h5>
-        </div>
-        <div class="col-6 mb-3">
-            <input class="form-control " type="file" id="formFile">
-        </div>
-
-        <button type="button" class="btn my-btn mb-3">Success</button>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <button type="submit" class="btn my-btn mb-3">Success</button>
+        </form>
     </div>
 {% endblock %}
