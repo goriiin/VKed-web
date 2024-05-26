@@ -25,6 +25,7 @@ class LoginForm(forms.Form):
 class RegisterForm(forms.Form):
     email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
     username = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    avatar = forms.ImageField(required=False, widget=forms.FileInput(attrs={'class': 'form-control'}))
 
     password = forms.CharField(widget=forms.PasswordInput, min_length=4, required=True)
     repeat_password = forms.CharField(widget=forms.PasswordInput, min_length=4, required=True)
@@ -44,21 +45,21 @@ class RegisterForm(forms.Form):
             return False
         return True
 
-    def is_user_valid(self, username):
+    def is_user_valid(self):
         super(RegisterForm, self).clean()
         email = self.cleaned_data.get('email')
         username = self.cleaned_data.get('username')
 
-        if User.objects.filter(username=username).count() > 0:
+        if User.objects.filter(username=username).count() > 0 or User.objects.filter(email=email).count() > 0:
             return False
 
-        if User.objects.filter(email=email).count() > 0:
-            return False
+        return True
 
     def save(self):
         username = self.cleaned_data.get('username')
         email = self.cleaned_data.get('email')
         password = self.cleaned_data.get('password')
+        avatar = self.cleaned_data.get('avatar')
         repeat_password = self.cleaned_data.get('repeat_password')
 
         if password != repeat_password:
@@ -68,7 +69,8 @@ class RegisterForm(forms.Form):
             username=username,
             email=email,
             password=password)
-        Profile.objects.create(user=user, avatar_path='static/img/default.jpg')
+        Profile.objects.create(user=user, avatar_path=avatar)
+        return user
 
 
 class AskForm(forms.Form):

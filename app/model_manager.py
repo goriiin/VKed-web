@@ -1,7 +1,17 @@
 from django.core.paginator import Paginator
-
+from django.db.models import F
 from app.forms import LoginForm, RegisterForm, AskForm, AnswerForm
-from app.models import Question, Answer
+from app.models import Question, Answer, Tag, Profile
+
+
+def get_popular_tags():
+    # print(Tag.objects.get_queryset().order_by('used_times')[:10])
+    return Tag.objects.get_queryset().order_by('-used_times')[:10]
+
+
+def get_popular_users():
+    # print(Profile.objects.get_queryset().order_by('answers_count')[0].user.username)
+    return Profile.objects.get_queryset().order_by('-answers_count')[:5]
 
 
 def get_answer_form(request):
@@ -18,7 +28,7 @@ def get_login_form(request):
 
 def get_signup_form(request):
     if request.method == "POST":
-        return RegisterForm(data=request.POST)
+        return RegisterForm(data=request.POST, files=request.FILES)
     return RegisterForm()
 
 
@@ -53,7 +63,7 @@ def check_page(request):
 
 def pagination(request, type_req, count=4, tag_name=None):
     page_num = check_page(request)
-
+    items = ''
     if type_req == 'index':
         items = index_news()
     elif type_req == 'tag':
@@ -95,6 +105,6 @@ def answer(request, question_id):
             question = Question.objects.get(pk=question_id)
             a.question = question
             a.author = request.user.profile
-
+            Profile.objects.filter(id=request.user.profile.id).update(answers_count=F('answers_count') + 1)
+            Question.objects.filter(id=question_id).update(answers_count=F('answers_count') + 1)
             a.save()
-

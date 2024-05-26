@@ -9,6 +9,9 @@ class TagQuerySet(models.QuerySet):
     def is_tag(self, tag):
         return self.filter(tag_name=tag)
 
+    def increment_used_times(self, tag_ids):
+        self.filter(id__in=tag_ids).update(used_times=models.F('used_times') + 1)
+
 
 class TagManager(models.Manager):
     def get_queryset(self):
@@ -20,6 +23,7 @@ class TagManager(models.Manager):
 
 class Tag(models.Model):
     tag_name = models.CharField(max_length=32, unique=True)
+    used_times = models.PositiveIntegerField(default=0)
 
     objects = TagManager()
 
@@ -30,11 +34,11 @@ class Tag(models.Model):
 # =================Profile============================== #
 
 class ProfileQuerySet(models.QuerySet):
-    def get_queryset(self):
-        return ProfileQuerySet(self.model, using=self._db)
-
     def is_profile(self, profile):
-        return self.get_queryset().is_profile(profile)
+        return self.filter(user__username=profile)
+
+    def increment_answers_count(self, profile_id):
+        self.filter(id=profile_id).update(answers_count=(models.F('answers_count') + 1))
 
 
 class ProfileManager(models.Manager):
@@ -47,13 +51,14 @@ class ProfileManager(models.Manager):
 
 class Profile(models.Model):
     updated_time = models.DateTimeField(auto_now=True)
-    avatar_path = models.ImageField(null=True, blank=True)
+    avatar_path = models.ImageField(upload_to='images', default='default.jpg')
+    answers_count = models.PositiveIntegerField(default=0)
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    objects = models.Manager()
+    objects = ProfileManager()
 
     def __str__(self):
-        return self.user.name
+        return self.user.username
 
     def __int__(self):
         return self.pk
@@ -73,6 +78,10 @@ class QuestionQueryset(models.QuerySet):
 
     def get_tags(self):
         return [tag.tag_name for tag in self.tags.all()]
+
+    def increment_answers_count(self, question_id):
+        # Увеличиваем счетчик ответов для вопроса
+        self.filter(id=question_id).update(answers_count=models.F('answers_count') + 1)
 
 
 class QuestionManager(models.Manager):
@@ -103,6 +112,12 @@ class Question(models.Model):
 
     def __int__(self):
         return self.pk
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if self.pk:
+            Tag.objects.get_queryset().increment_used_times(self.tags.values_list('id', flat=True))
 
 
 # ===============QuestionLike================================ #
@@ -170,12 +185,25 @@ class Answer(models.Model):
     likes_count = models.IntegerField(default=0)
     question = models.ForeignKey(Question, on_delete=models.CASCADE, blank=True, null=True)
 
+
     def __str__(self):
         return self.answer
 
     def __int__(self):
         return self.pk
 
+    def save(self, *args, **kwargs):
+        created = self._state.adding
+
+        super().save(*args, **kwargs)
+
+        if created:
+            if self.question:
+                self.question.answers_count += 1
+                self.question.save()
+            if self.author:
+                self.author.answers_count += 1
+                self.author.save()
 
 # =============AnsweLiker================================== #
 

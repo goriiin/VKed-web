@@ -5,7 +5,7 @@
         <div class="col-2 p-2">
             <div class="border mb-3 w-100 gray pic">
                 <img
-                        src="{% static 'img/default.jpg' %}"
+                        src="{{ item.author.avatar_path.url }}"
                         class="img-fluid rounded-start"
                         alt="..."/>
             </div>
@@ -23,7 +23,7 @@
                     {{ item.text }}
                 </p>
                 <div class="col">
-                    <a class="row container mb-4" href="{% url 'question' item.id %}">answers (3)</a>
+                    <a class="row container mb-4" href="{% url 'question' item.id %}">answers ({{ item.answers_count }})</a>
                     <div class="row mb-0">
                         <div class="col">
                             <span>Tags</span>

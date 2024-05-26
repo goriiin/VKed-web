@@ -34,40 +34,18 @@
                 <h3 class="white">Popular Tags</h3>
                 <div class="col-8">
                     <div class="row">
-                        <a class="col link-primary" href="/tag/Primary">Primary</a>
-                        <a class="col link-success" href="/tag/Success">Success</a>
-                        <a class="col link-danger" href="/tag/Danger">Danger</a>
-                        <a class="col link-warning" href="/tag/Warning">Warning</a>
-                        <a class="col link-info" href="/tag/Info">Info</a>
-                        <a class="col link-light" href="/tag/Light">Light</a>
-                        <a class="col link-primary" href="/tag/Primary">Primary</a>
-                        <a class="col link-success" href="/tag/Success">Success</a>
-                        <a class="col link-danger" href="/tag/Danger">Danger</a>
-                        <a class="col link-warning" href="/tag/Warning">Warning</a>
-                        <a class="col link-info" href="/tag/Info">Info</a>
-                        <a class="col link-light" href="/tag/Light">Light</a><a class="col link-primary"
-                                                                                href="/tag/Primary">Primary</a>
-                        <a class="col link-success" href="/tag/Success">Success</a>
-                        <a class="col link-danger" href="/tag/Danger">Danger</a>
-                        <a class="col link-warning" href="/tag/Warning">Warning</a>
-                        <a class="col link-info" href="/tag/Info">Info</a>
-                        <a class="col link-light" href="/tag/Light">Light</a><a class="col link-primary"
-                                                                                href="/tag/Primary">Primary</a>
-                        <a class="col link-success" href="/tag/Success">Success</a>
-                        <a class="col link-danger" href="/tag/Danger">Danger</a>
-                        <a class="col link-warning" href="/tag/Warning">Warning</a>
-                        <a class="col link-info" href="/tag/Info">Info</a>
-                        <a class="col link-light" href="/tag/Light">Light</a>
+
+                        {% for tag in pop_tags %}
+                            <a class="col link-success" href="/tag/{{ tag.tag_name }}">{{ tag.tag_name }}</a>
+                        {% endfor %}
                     </div>
                 </div>
 
                 <h3 class="mt-5 white">Best Members</h3>
                 <div>
-                    <a href="/member.html" class="d-block">Mr. Freeman</a
-                    ><a href="/member.html" class="d-block">Mr. Freeman</a
-                ><a href="/member.html" class="d-block">Mr. Freeman</a
-                ><a href="/member.html" class="d-block">Mr. Freeman</a
-                ><a href="/member.html" class="d-block">Mr. Freeman</a>
+                    {% for u in pop_users %}
+                        <a href="" class="d-block link-success">{{ u.user.username }}</a>
+                    {% endfor %}
                 </div>
             </div>
         </div>
