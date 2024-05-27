@@ -69,7 +69,10 @@ class RegisterForm(forms.Form):
             username=username,
             email=email,
             password=password)
-        Profile.objects.create(user=user, avatar_path=avatar)
+        if avatar:
+            Profile.objects.create(user=user, avatar_path=avatar)
+        else:
+            Profile.objects.create(user=user)
         return user
 
 
