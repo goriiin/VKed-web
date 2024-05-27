@@ -69,7 +69,7 @@ class Profile(models.Model):
 
 class QuestionQueryset(models.QuerySet):
     def order_rating(self):
-        return self.order_by('-likes_count').order_by('-created_time')
+        return self.order_by('-created_time').order_by('-likes_count')
 
     def order_time(self):
         return self.order_by('-created_time')

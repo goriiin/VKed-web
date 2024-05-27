@@ -44,32 +44,7 @@ for (const card of answer_cards) {
             .then((data) =>
                 answer_rating.innerHTML = data.count)
     })
-    correct_btn.addEventListener('click', () => {
-        let ans_id = card.getAttribute('id');
-        ans_id = Number(ans_id);
-        const request = new Request('/correct/', {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken'),
-            },
-            body: JSON.stringify({
-                id: ans_id,
-                flag: correct_btn.checked,
-            })
-        })
-        fetch(request)
-            .then((response) => response.json())
-            .then((data) => {
-                correct_btn.checked = data.flag;
-                if (data.flag === true)
-                    card.classList.add('border-success')
-                else
-                    card.classList.remove('border-success')
-            })
-    })
-
-    dislike_btn.addEventListener('click', () => {
+     dislike_btn.addEventListener('click', () => {
         let ans_id = card.getAttribute('id');
         ans_id = Number(ans_id);
         const answer_rating = card.querySelector('.answer-rating');
@@ -90,6 +65,39 @@ for (const card of answer_cards) {
             .then((data) =>
                 answer_rating.innerHTML = data.count)
     })
+    if (correct_btn != null){
+         correct_btn.addEventListener('click', () => {
+        let ans_id = card.getAttribute('id');
+        ans_id = Number(ans_id);
+        const request = new Request('/correct/', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({
+                id: ans_id,
+                flag: correct_btn.checked,
+
+            })
+        })
+        fetch(request)
+            .then((response) => response.json())
+            .then((data) => {
+                correct_btn.checked = data.flag;
+                const corAnswerDiv = card.querySelector('.cor-answer')
+                if (data.flag === true) {
+                    card.classList.add('border-success');
+                }
+                else {
+                    card.classList.remove('border-success');
+                }
+            })
+    })
+    }
+
+
+
 }
 
 for (const card of question_cards) {
