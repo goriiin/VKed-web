@@ -169,7 +169,7 @@ class QuestionLike(models.Model):
 
 class AnswerQuerySet(models.QuerySet):
     def hots(self):
-        return self.order_by('-likes_count')
+        return self.order_by('-created_time').order_by('-likes_count')
 
 
 class AnswerManager(models.Manager):
