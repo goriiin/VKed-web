@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - ./static:/usr/share/nginx/html/static:ro
+      - ./uploads:/usr/share/nginx/html/uploads:ro
+    depends_on:
+      - app
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    expose:
+      - "8081"
+    command: gunicorn -w 2 --bind 127.0.0.1:8081 askme_koshenkov.wsgi
